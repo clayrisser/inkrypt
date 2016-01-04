@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Security.Cryptography;
 using System.IO;
 
 public class CipherUtility {
+
+
     public static string Encrypt<T>(string value, string password, string salt)
          where T : SymmetricAlgorithm, new() {
         DeriveBytes rgb = new Rfc2898DeriveBytes(password, Encoding.Unicode.GetBytes(salt));
@@ -26,6 +29,7 @@ public class CipherUtility {
         }
     }
 
+
     public static string Decrypt<T>(string text, string password, string salt)
        where T : SymmetricAlgorithm, new() {
         DeriveBytes rgb = new Rfc2898DeriveBytes(password, Encoding.Unicode.GetBytes(salt));
@@ -46,26 +50,80 @@ public class CipherUtility {
         }
     }
 
+
     public static string PigLatinEncrypt(string normalText) {
-        string[] normalArray = normalText.Split(' ');
+        string[] normalArray = normalText.SanatizeWhitespace().Split(' ');
         string[] cipherArray = new string[normalArray.Length];
         string cipherText = "";
 
-        for (int i = 0; i < normalArray.Length && normalArray[i].Length > 0; i++) {
-            string piglet = normalArray[i];
-            piglet += piglet[0] + "ay";
-            piglet = piglet.Substring(1);
-            cipherArray[i] = piglet;
+        for (int i = 0; i < normalArray.Length && normalArray[i].Length > 0; i++) { // Piglatinify <normalArray> and add them to <cipherArray>
+            string cipherWord = normalArray[i];
+            string prefix = "";
+            string suffix = "";
+            if (!Regex.IsMatch(cipherWord[0].ToString(), @"[\w]")) { // Begins with nonword character
+                prefix = cipherWord.GetPrefix();
+                cipherWord = cipherWord.Substring(prefix.Length);
+            }
+            if (cipherWord.Length > 1 && !Regex.IsMatch(cipherWord[cipherWord.Length - 1].ToString(), @"[\w]")) { // Ends with nonword character
+                suffix = cipherWord.GetSuffix();
+                cipherWord = cipherWord.Substring(0, cipherWord.Length - suffix.Length);
+            }
+            if (cipherWord.Length > 1) { // Prevents error when string only contains symbols
+                if (cipherWord[0].IsVowel()) { // Begins with vowel
+                    cipherWord += "way";
+                } else { // Begins with consonant
+                    string consonant = "";
+                    bool upperCase = false;
+                    bool allCaps = false;
+                    bool beginsWithY = false;
+                    if (cipherWord[0].ToString().ToUpper() == "Y") { // Begins with y
+                        beginsWithY = true;
+                    }
+                    for (int j = 0; j < cipherWord.Length; j++) { // Determine casing
+                        if (j == 0) {
+                            if (cipherWord[j].IsUpper()) {
+                                upperCase = true;
+                                allCaps = true;
+                            } else {
+                                break;
+                            }
+                        } else {
+                            if (cipherWord[j].IsUpper()) {
+                                upperCase = false;
+                            } else {
+                                allCaps = false;
+                            }
+                        }
+                    }
+                    for (int j = 0; j < cipherWord.Length && !cipherWord[j].IsVowel(); j++) { // Find consonant
+                        consonant += cipherWord[j];
+                    }
+                    if (beginsWithY) {
+                        cipherWord += consonant + "ou";
+                    } else {
+                        cipherWord += consonant + "ay";
+                    }
+                    cipherWord = cipherWord.Substring(consonant.Length);
+                    if (upperCase) {
+                        cipherWord = cipherWord.UppercaseWord();
+                    } else if (allCaps) {
+                        cipherWord = cipherWord.ToUpper();
+                    }
+                }
+            }
+            cipherWord = prefix + cipherWord + suffix;
+            cipherArray[i] = cipherWord;
         }
-        for (int i = 0; i < cipherArray.Length; i++) {
+        for (int i = 0; i < cipherArray.Length; i++) { // Create string from <cipherArray>
             if (i == 0) {
-                cipherText += Convert.ToString(cipherArray[i]);
+                cipherText += cipherArray[i];
             } else {
                 cipherText += " " + cipherArray[i];
             }
         }
         return cipherText;
     }
+
 
     public static string PigLatinDecrypt(string cipherText) {
         string[] cipherArray = cipherText.Split(' ');
@@ -81,14 +139,15 @@ public class CipherUtility {
             }
             normalArray[i] = normalWord;
         }
-        
         for (int i = 0; i < normalArray.Length; i++) {
             if (i == 0) {
-                normalText += Convert.ToString(normalArray[i]);
+                normalText += normalArray[i].ToString();
             } else {
                 normalText += " " + normalArray[i];
             }
         }
         return normalText;
     }
+
+
 }
