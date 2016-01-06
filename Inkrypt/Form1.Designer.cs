@@ -56,7 +56,7 @@
             // 
             // secretKeyTextBox
             // 
-            this.secretKeyTextBox.Location = new System.Drawing.Point(12, 25);
+            this.secretKeyTextBox.Location = new System.Drawing.Point(12, 64);
             this.secretKeyTextBox.Name = "secretKeyTextBox";
             this.secretKeyTextBox.Size = new System.Drawing.Size(386, 20);
             this.secretKeyTextBox.TabIndex = 4;
@@ -69,7 +69,7 @@
             this.modeComboBox.Items.AddRange(new object[] {
             "Encrypt",
             "Decrypt"});
-            this.modeComboBox.Location = new System.Drawing.Point(12, 64);
+            this.modeComboBox.Location = new System.Drawing.Point(12, 25);
             this.modeComboBox.Name = "modeComboBox";
             this.modeComboBox.Size = new System.Drawing.Size(121, 21);
             this.modeComboBox.TabIndex = 5;
@@ -78,7 +78,7 @@
             // secretKeyLabel
             // 
             this.secretKeyLabel.AutoSize = true;
-            this.secretKeyLabel.Location = new System.Drawing.Point(12, 9);
+            this.secretKeyLabel.Location = new System.Drawing.Point(9, 48);
             this.secretKeyLabel.Name = "secretKeyLabel";
             this.secretKeyLabel.Size = new System.Drawing.Size(59, 13);
             this.secretKeyLabel.TabIndex = 6;
@@ -105,7 +105,7 @@
             // modeLabel
             // 
             this.modeLabel.AutoSize = true;
-            this.modeLabel.Location = new System.Drawing.Point(9, 48);
+            this.modeLabel.Location = new System.Drawing.Point(9, 9);
             this.modeLabel.Name = "modeLabel";
             this.modeLabel.Size = new System.Drawing.Size(34, 13);
             this.modeLabel.TabIndex = 9;
@@ -121,7 +121,7 @@
             "Rijndael",
             "JamRizzi",
             "Pig Latin"});
-            this.methodComboBox.Location = new System.Drawing.Point(152, 64);
+            this.methodComboBox.Location = new System.Drawing.Point(139, 25);
             this.methodComboBox.Name = "methodComboBox";
             this.methodComboBox.Size = new System.Drawing.Size(121, 21);
             this.methodComboBox.TabIndex = 10;
@@ -130,7 +130,7 @@
             // methodLabel
             // 
             this.methodLabel.AutoSize = true;
-            this.methodLabel.Location = new System.Drawing.Point(149, 48);
+            this.methodLabel.Location = new System.Drawing.Point(136, 9);
             this.methodLabel.Name = "methodLabel";
             this.methodLabel.Size = new System.Drawing.Size(43, 13);
             this.methodLabel.TabIndex = 11;

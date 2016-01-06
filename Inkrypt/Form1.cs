@@ -18,6 +18,7 @@ namespace Inkrypt {
             this.methodComboBox.SelectedIndex = 0;
         }
 
+
         private void UpdateOutput() {
             this.secretKeyTextBox.ReadOnly = false;
             string input = this.textInputTextBox.Text;
@@ -28,8 +29,8 @@ namespace Inkrypt {
             } else {
                 Decrypt(input, key, salt);
             }
-
         }
+
 
         private void Encrypt(string input, string key, string salt) {
             try {
@@ -47,7 +48,7 @@ namespace Inkrypt {
                         break;
                     case "Pig Latin":
                         this.secretKeyTextBox.ReadOnly = true;
-                        this.textOutputTextBox.Text = CipherUtility.PigLatinEncrypt(input);
+                        this.textOutputTextBox.Text = PigLatin.PigLatinEncrypt(input);
                         break;
                 }
             } catch (CryptographicException) {
@@ -56,6 +57,7 @@ namespace Inkrypt {
                 this.textOutputTextBox.Text = "Invalid";
             }
         }
+
 
         private void Decrypt(string input, string key, string salt) {
             try {
@@ -73,7 +75,7 @@ namespace Inkrypt {
                         break;
                     case "Pig Latin":
                         this.secretKeyTextBox.ReadOnly = true;
-                        this.textOutputTextBox.Text = CipherUtility.PigLatinDecrypt(input);
+                        this.textOutputTextBox.Text = PigLatin.PigLatinDecrypt(input);
                         break;
                 }
             } catch (CryptographicException) {
@@ -83,28 +85,36 @@ namespace Inkrypt {
             }
         }
 
+
         private void textBox1_TextChanged(object sender, EventArgs e) {
             UpdateOutput();
         }
+
 
         private void secretKeyTextBox_TextChanged(object sender, EventArgs e) {
             UpdateOutput();
         }
 
+
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e) {
             UpdateOutput();
         }
+
 
         private void comboBox1_SelectedIndexChanged_1(object sender, EventArgs e) {
             UpdateOutput();
         }
 
+
         private void textBox2_TextChanged(object sender, EventArgs e) {
 
         }
 
+
         private void encryptButton_Click(object sender, EventArgs e) {
 
         }
+
+
     }
 }
