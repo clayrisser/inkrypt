@@ -113,5 +113,58 @@ namespace Inkrypt {
         }
 
 
+        public static bool Dashed(this string input) {
+            bool output = false;
+            for (int i = input.Length - 3; i > 0; i--) {
+                if (input[i] == '-') {
+                    output = true;
+                    break;
+                } else if (input[i].IsVowel()) {
+                    break;
+                }
+            }
+            return output;
+        }
+
+
+        public static string DetermineCasing(this string input) {
+            string output = "";
+            bool upperCase = false;
+            bool allCaps = false;
+            if (input.Length > 1) {
+                for (int i = 0; i < input.Length; i++) {
+                    if (i == 0) {
+                        if (input[i].IsUpper() || !Regex.IsMatch(input[i].ToString(), @"[A-Za-z]")) {
+                            upperCase = true;
+                            allCaps = true;
+                        } else {
+                            break;
+                        }
+                    } else {
+                        if (Regex.IsMatch(input[i].ToString(), @"[A-Za-z]")) {
+                            if (input[i].IsUpper()) {
+                                upperCase = false;
+                            } else {
+                                allCaps = false;
+                            }
+                        }
+                    }
+                }
+            } else {
+                if (input[0].IsUpper()) {
+                    upperCase = true;
+                }
+            }
+            if (allCaps) {
+                output = "allCaps";
+            } else if (upperCase) {
+                output = "uppercase";
+            } else {
+                output = "lowercase";
+            }
+            return output;
+        }
+
+
     }
 }

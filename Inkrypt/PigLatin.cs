@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace Inkrypt {
     static class PigLatin {
-        private static string alphabetic = @"[a-zA-Z']";
+        private static string alphabetic = @"[a-zA-Z'-]";
 
 
         public static string PigLatinEncrypt(string normalText) {
@@ -53,6 +53,9 @@ namespace Inkrypt {
             string output = "";
             string chunk = "";
 
+            // Determine casing
+            string casing = input.DetermineCasing();
+
             for (int i = 0; i < input.Length; i++) { // Iterate over each character of <input>
 
                 if (i == 0) { // First char  
@@ -79,6 +82,13 @@ namespace Inkrypt {
             for (int i = 0; i < chunks.Count; i++) {
                 output += chunks[i];
             }
+
+            // Update casing
+            if (casing == "uppercase") {
+                output = output.UppercaseWord();
+            } else if (casing == "allCaps") {
+                output = output.ToUpper();
+            }
             return output;
         }
 
@@ -87,6 +97,9 @@ namespace Inkrypt {
             List<string> chunks = new List<string>();
             string output = "";
             string chunk = "";
+
+            // Determine casing
+            string casing = input.DetermineCasing();
 
             for (int i = 0; i < input.Length; i++) { // Iterate over each character of <input>
 
@@ -114,6 +127,13 @@ namespace Inkrypt {
             for (int i = 0; i < chunks.Count; i++) {
                 output += chunks[i];
             }
+
+            // Update casing
+            if (casing == "uppercase") {
+                output = output.UppercaseWord();
+            } else if (casing == "allCaps") {
+                output = output.ToUpper();
+            }
             return output;
         }
 
@@ -126,27 +146,9 @@ namespace Inkrypt {
     
                 } else { // <chunk> begins with consonant
                     string consonant = "";
-                    bool upperCase = false;
-                    bool allCaps = false;
                     bool beginsWithY = false;
                     if (chunk[0].ToString().ToUpper() == "Y") { // Begins with y
                         beginsWithY = true;
-                    }
-                    for (int j = 0; j < chunk.Length; j++) { // Determine casing
-                        if (j == 0) {
-                            if (chunk[j].IsUpper()) {
-                                upperCase = true;
-                                allCaps = true;
-                            } else {
-                                break;
-                            }
-                        } else {
-                            if (chunk[j].IsUpper()) {
-                                upperCase = false;
-                            } else {
-                                allCaps = false;
-                            }
-                        }
                     }
                     for (int j = 0; j < chunk.Length && !chunk[j].IsVowel(); j++) { // Find <consonant>
                         consonant += chunk[j];
@@ -162,11 +164,6 @@ namespace Inkrypt {
                     } else {
                         chunk += consonant + "ay";
                     }
-                    if (upperCase) { // Update casing
-                        chunk = chunk.UppercaseWord();
-                    } else if (allCaps) {
-                        chunk = chunk.ToUpper();
-                    }
                 }
             } // nothing happens if <chunk> is not alphabetical
 
@@ -177,54 +174,44 @@ namespace Inkrypt {
         public static string UnpiglatifyChunk(this string chunk) {
 
             if (Regex.IsMatch(chunk[0].ToString(), alphabetic)) { // <chunk> is alphabetic
-                if (chunk.Length > 3 && chunk.Substring(chunk.Length - 3) == "way") { // <chunk> ends with "way"
+                if (chunk.Length > 3 && chunk.Substring(chunk.Length - 3).ToUpper() == "WAY" && chunk.Substring(chunk.Length - 4).ToUpper() != "-WAY") { // <chunk> ends with "way" or "-way"
                     chunk = chunk.Substring(0, chunk.Length - 3);
+                } else if (chunk.Length > 4 && chunk.Substring(chunk.Length - 4).ToUpper() == "-WAY") {
+                    chunk = chunk.Substring(0, chunk.Length - 4);
 
-                } else if (chunk.Length > 2) { // <chunk> ends with a consonant + "ay"
+                } else if (chunk.Length > 2 && chunk.Substring(chunk.Length - 2).ToUpper() == "AY" && !chunk[chunk.Length - 3].IsVowel() && chunk.Dashed()) { // <chunk> ends with a consonant + "ay" and contains a dash between consonants
                     string consonant = "";
-                    bool upperCase = false;
-                    bool allCaps = false;
-                    bool endsWithYay = false;
-                    if (chunk.Substring(chunk.Length - 3).ToUpper() == "YAH") { // Ends with "yay"
-                        endsWithYay = true;
-                    }
-                    for (int j = 0; j < chunk.Length; j++) { // Determine casing
-                        if (j == 0) {
-                            if (chunk[j].IsUpper()) {
-                                upperCase = true;
-                                allCaps = true;
-                            } else {
-                                break;
-                            }
+                    for (int i = chunk.Length - 3; i > 0; i--) { // Find consonant
+                        if (chunk[i] == '-' || chunk[i].IsVowel()) {
+                            break;
                         } else {
-                            if (chunk[j].IsUpper()) {
-                                upperCase = false;
-                            } else {
-                                allCaps = false;
-                            }
+                            consonant = chunk[i] + consonant;
                         }
                     }
-                    /* for (int j = chunk.Length - 1; j > 0; j--) {
-                        if () {
-                            consonant += chunk[j];
-                        }
+                    chunk = consonant + chunk.Substring(0, chunk.Length - consonant.Length - 3);
 
-                    } */
-                    for (int j = 0; j < chunk.Length && !chunk[j].IsVowel(); j++) { // Find <consonant>
-                        consonant += chunk[j];
+                } else if(chunk.Length > 2 && chunk.Substring(chunk.Length - 2).ToUpper() == "AY" && !chunk[chunk.Length - 3].IsVowel() && !chunk.Dashed()) { // <chunk> ends with consonant + "ay" and does not contain a dash between consonants
+                    string consonant = "";
+                    int breakPoint = 0;
+                    for (int i = chunk.Length - 3; i > 0; i--) { // Find consonant
+                        if (chunk[i].IsVowel()) {
+                            break;
+                        } else {
+                            consonant = chunk[i] + consonant;
+                        }
                     }
-                    if (endsWithYay) { // Piglatify
-                        chunk += consonant + "ou";
+
+                    int length = consonant.Length;
+                    int mod = (consonant.Length / 2) + 1;
+                    if (consonant.Length > 1 && consonant.Length % 2 != 0 &&
+                        consonant[(consonant.Length / 2)] == 's') { // Find consonant breakpoint
+                        breakPoint = (consonant.Length / 2) + 1;
                     } else {
-                        chunk += consonant + "ay";
+                        breakPoint = consonant.Length / 2;
                     }
-                    chunk = chunk.Substring(consonant.Length);
-                    if (upperCase) { // Update casing
-                        chunk = chunk.UppercaseWord();
-                    } else if (allCaps) {
-                        chunk = chunk.ToUpper();
-                    }
-                } // nothing happens if <chunk> is not alphabetical
+                    consonant = consonant.Substring(breakPoint);
+                    chunk = consonant + chunk.Substring(0, chunk.Length - consonant.Length - 2);
+                } // nothing happens the above criteria not met
             }
 
             return chunk;

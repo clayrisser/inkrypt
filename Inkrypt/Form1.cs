@@ -115,6 +115,10 @@ namespace Inkrypt {
 
         }
 
-
+        private void switchButton_Click(object sender, EventArgs e) {
+            string temp = this.textInputTextBox.Text;
+            this.textInputTextBox.Text = this.textOutputTextBox.Text;
+            this.textOutputTextBox.Text = temp;
+        }
     }
 }
