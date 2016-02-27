@@ -7,3 +7,12 @@ c:\users\benjamin risser\documents\visual studio 2015\Projects\Inkrypt\Inkrypt\o
 c:\users\benjamin risser\documents\visual studio 2015\Projects\Inkrypt\Inkrypt\obj\Debug\Inkrypt.csproj.GenerateResource.Cache
 c:\users\benjamin risser\documents\visual studio 2015\Projects\Inkrypt\Inkrypt\obj\Debug\Inkrypt.exe
 c:\users\benjamin risser\documents\visual studio 2015\Projects\Inkrypt\Inkrypt\obj\Debug\Inkrypt.pdb
+C:\Users\Benjamin Risser\Version Control\Bitbucket\JamRizzi Technologies\Inkrypt\inkrypt-windows-application\Inkrypt\bin\Debug\Inkrypt.exe.config
+C:\Users\Benjamin Risser\Version Control\Bitbucket\JamRizzi Technologies\Inkrypt\inkrypt-windows-application\Inkrypt\obj\Debug\Inkrypt.exe
+C:\Users\Benjamin Risser\Version Control\Bitbucket\JamRizzi Technologies\Inkrypt\inkrypt-windows-application\Inkrypt\obj\Debug\Inkrypt.pdb
+C:\Users\Benjamin Risser\Version Control\Bitbucket\JamRizzi Technologies\Inkrypt\inkrypt-windows-application\Inkrypt\bin\Debug\Inkrypt.exe
+C:\Users\Benjamin Risser\Version Control\Bitbucket\JamRizzi Technologies\Inkrypt\inkrypt-windows-application\Inkrypt\bin\Debug\Inkrypt.pdb
+C:\Users\Benjamin Risser\Version Control\Bitbucket\JamRizzi Technologies\Inkrypt\inkrypt-windows-application\Inkrypt\obj\Debug\Inkrypt.csprojResolveAssemblyReference.cache
+C:\Users\Benjamin Risser\Version Control\Bitbucket\JamRizzi Technologies\Inkrypt\inkrypt-windows-application\Inkrypt\obj\Debug\Inkrypt.Form1.resources
+C:\Users\Benjamin Risser\Version Control\Bitbucket\JamRizzi Technologies\Inkrypt\inkrypt-windows-application\Inkrypt\obj\Debug\Inkrypt.Properties.Resources.resources
+C:\Users\Benjamin Risser\Version Control\Bitbucket\JamRizzi Technologies\Inkrypt\inkrypt-windows-application\Inkrypt\obj\Debug\Inkrypt.csproj.GenerateResource.Cache
